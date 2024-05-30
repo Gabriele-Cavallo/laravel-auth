@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>LISTA PROGETTI APERTI</h1>
-    <table class="table table-bordered border-primary">
+    <table class="table table-bordered border-primary align-middle">
         <thead>
             <th>ID</th>
             <th>Project Name</th>
@@ -14,7 +14,7 @@
         <tbody>
             @foreach ($projects as $project)
                 <tr>
-                    <td>{{ $project->id }}</td>
+                    <td><strong>{{ $project->id }}</strong></td>
                     <td>{{ $project->name }}</td>
                     <td>{{ $project->slug }}</td>
                     <td>{{ $project->client_name }}</td>
