@@ -10,7 +10,7 @@
             <div class="my-2"><strong>Summary</strong>: {{ $project->summary }}</div>
         @endif
         <button class="btn btn-dark mt-4">
-            <a class="nav-link text-white {{ Route::currentRouteName() === 'admin.projects.index' ? 'bg-secondary' : '' }}" href="{{ route('admin.projects.index') }}">
+            <a class="nav-link text-white" href="{{ route('admin.projects.index') }}">
                 <i class="fa-solid fa-tachometer-alt fa-lg fa-fw"></i> Projects
             </a>
         </button>
