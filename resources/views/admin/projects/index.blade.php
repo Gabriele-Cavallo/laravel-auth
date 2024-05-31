@@ -19,15 +19,18 @@
                     <td>{{ $project->slug }}</td>
                     <td>{{ $project->client_name }}</td>
                     <td>{{ $project->summary }}</td>
-                    <td>
-                        <button class="btn btn-dark">
+                    <td class="text-center">
+                        <button class="btn btn-dark my-2">
                             <a href="{{ route('admin.projects.show', $project->id) }}">View Project</a>
                         </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-dark">
+                        <button class="btn btn-dark my-2">
                             <a href="{{ route('admin.projects.edit', $project->id) }}">Edit Project</a>
                         </button>
+                        <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger my-2">Delete</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
