@@ -29,11 +29,29 @@
                         <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger my-2">Delete</button>
+                            <button type="submit" class="btn btn-danger my-2 js-delete-btn" data-project-name="{{ $project->name }}">Delete</button>
                         </form>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+
+     <!-- Modale eliminazione progetto -->
+     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteConfirmModalLabel">Confirm deletion</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary btn-danger" id="modal-confirm">Delete</button>
+            </div>
+        </div>
+        </div>
+    </div>
 @endsection
