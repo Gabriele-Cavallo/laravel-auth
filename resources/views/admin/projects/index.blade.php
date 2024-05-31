@@ -20,7 +20,14 @@
                     <td>{{ $project->client_name }}</td>
                     <td>{{ $project->summary }}</td>
                     <td>
-                        <a href="{{ route('admin.projects.show', $project->id) }}">View Project</a>
+                        <button class="btn btn-dark">
+                            <a href="{{ route('admin.projects.show', $project->id) }}">View Project</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-dark">
+                            <a href="{{ route('admin.projects.edit', $project->id) }}">Edit Project</a>
+                        </button>
                     </td>
                 </tr>
             @endforeach
