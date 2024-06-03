@@ -64,8 +64,10 @@ class ProjectController extends Controller
         $newProject->fill($form);
         // $newProject->slug = Str::slug($newProject->name, '-');
         $newProject->save();
+
+        // session()->flash('message', $newProject->name . 'successfully created.');
         
-        return redirect()->route('admin.projects.show', $newProject->id);
+        return redirect()->route('admin.projects.show', $newProject->slug)->with('message', $newProject->name . ' successfully created.');
     }
 
     /**
@@ -126,7 +128,7 @@ class ProjectController extends Controller
         $project->slug = Str::slug($form['name'], '-');
         $project->update($form);
 
-        return redirect()->route('admin.projects.show', $project->id);
+        return redirect()->route('admin.projects.show', $project->slug);
     }
 
     /**
@@ -139,6 +141,6 @@ class ProjectController extends Controller
     {
         $project->delete();
 
-        return redirect()->route('admin.projects.index');
+        return redirect()->route('admin.projects.index')->with('message', $project->name . ' successfully deleted.');
     }
 }

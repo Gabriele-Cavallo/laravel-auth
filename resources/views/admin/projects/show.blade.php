@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
+    @include('partials.flash-messages')
+
     <h2>{{ $project->name }}</h2>
 
     <div class="project-wrapper">
