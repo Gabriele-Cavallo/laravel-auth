@@ -13,7 +13,7 @@
     </div>
 @endif
 
-<form action="{{ route('admin.projects.update', $project->slug)}}" method="POST">
+<form action="{{ route('admin.projects.update', $project->slug)}}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     {{-- Project name input --}}
@@ -25,6 +25,18 @@
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
     {{-- /Project name input --}}
+
+    {{-- Image input --}}
+    <div class="mb-3">
+        <label for="cover_image" class="form-label">Upload image</label>
+        <input class="form-control" type="file" id="cover_image" name="cover_image">
+        @if ($project->cover_image)
+            <img class="mt-3" src="{{ asset('storage/' . $project->cover_image) }}" alt="{{ $project->name }}">
+        @else
+            <p>No image found</p>
+        @endif
+    </div>
+    {{-- Image input --}}
 
     {{-- Client name input --}}
     <div class="mb-3">

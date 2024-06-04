@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProjectController extends Controller
@@ -44,7 +45,8 @@ class ProjectController extends Controller
             [
                 'name' => 'required|min:1|max:100|unique:projects,name',
                 'client_name' => 'required|min:1|max:100',
-                'summary' => 'nullable|min:10'
+                'summary' => 'nullable|min:10',
+                'cover_image' => 'nullable|image|max:512'
             ],
             [
                 'name.required' => 'Il nome del progetto è obbligatorio',
@@ -55,10 +57,17 @@ class ProjectController extends Controller
                 'client_name.min' => 'Il nome del cliente deve contenere almeno 1 carattere',
                 'client_name.max' => 'Il nome del cliente può contenere al massimo 100 caratteri',
                 'summary.min' => 'La descrizione deve contenere almeno 10 caratteri o essere vuota',
+                'cover_image.image' => 'Il file caricato non è un\'immagine',
+                'cover_image.max' => 'Il file caricato è troppo grande, i file possono essere al massimo 512kb.'
             ]
         );
         $form = $request->all();
         $form['slug'] = Str::slug($form['name'], '-');
+        
+        if ($request->hasFile('cover_image')) {
+            $img_path = Storage::disk('public')->put('projects_images', $form['cover_image']);
+            $form['cover_image'] = $img_path;
+        }
 
         $newProject = new Project();
         $newProject->fill($form);
@@ -107,10 +116,11 @@ class ProjectController extends Controller
                     'required',
                     'min:1',
                     'max:100',
-                    Rule::unique('projects')->ignore($project)
+                    Rule::unique('projects')->ignore($project),
                 ],
                 'client_name' => 'required|min:1|max:100',
-                'summary' => 'nullable|min:10'
+                'summary' => 'nullable|min:10',
+                'cover_image' => 'nullable|image|max:512'
             ],
             [
                 'name.required' => 'Il nome del progetto è obbligatorio',
@@ -121,10 +131,19 @@ class ProjectController extends Controller
                 'client_name.min' => 'Il nome del cliente deve contenere almeno 1 carattere',
                 'client_name.max' => 'Il nome del cliente può contenere al massimo 100 caratteri',
                 'summary.min' => 'La descrizione deve contenere almeno 10 caratteri o essere vuota',
+                'cover_image.image' => 'Il file caricato non è un\'immagine',
+                'cover_image.max' => 'Il file caricato è troppo grande, i file possono essere al massimo 512kb.'
             ]
         );
 
         $form = $request->all();
+        if ($request->hasFile('cover_image')) {
+            if ($project->cover_image) {
+                Storage::delete($project->cover_image);
+            }
+            $img_path = Storage::disk('public')->put('projects_images', $form['cover_image']);
+            $form['cover_image'] = $img_path;
+        }
         $project->slug = Str::slug($form['name'], '-');
         $project->update($form);
 
@@ -139,6 +158,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->cover_image) {
+            Storage::delete($project->cover_image);
+        }
         $project->delete();
 
         return redirect()->route('admin.projects.index')->with('message', $project->name . ' successfully deleted.');
